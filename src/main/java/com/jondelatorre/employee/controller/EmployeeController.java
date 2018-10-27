@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,20 +26,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jondelatorre.employee.dto.EmployeeDto;
-import com.jondelatorre.employee.entity.Employee;
 import com.jondelatorre.employee.error.AlreadyDeletedException;
 import com.jondelatorre.employee.error.ErrorDto;
 import com.jondelatorre.employee.error.NotFoundException;
 import com.jondelatorre.employee.mapper.Mapper;
+import com.jondelatorre.employee.model.Employee;
 import com.jondelatorre.employee.repository.EmployeeRepository;
 
 @RestController
-@RequestMapping(value = "/employee")
+@RequestMapping(value = EmployeeController.EMPLOYEE_REQUEST_MAPPING)
 public class EmployeeController {
 
     private static final String ENTITY_FIELD = "id";
 
     private static final String ENTITY_NAME = "Employee";
+    public static final String EMPLOYEE_REQUEST_MAPPING = "/employee";
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
@@ -52,7 +54,7 @@ public class EmployeeController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public EmployeeDto createEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
-        Employee employee = employeeMapper.toEntity(employeeDto);
+        Employee employee = employeeMapper.toModel(employeeDto);
         employee.setStatus(true);
         employee.setCreated(LocalDateTime.now());
         employee = employeeRepository.insert(employee);
@@ -74,7 +76,7 @@ public class EmployeeController {
     @ResponseStatus(value = HttpStatus.OK)
     public EmployeeDto updateEmployee(@Valid @RequestBody EmployeeDto employeeDto,
             @PathVariable Long employeeId) {
-        Employee employee = employeeMapper.toEntity(employeeDto);
+        Employee employee = employeeMapper.toModel(employeeDto);
         if (!employeeRepository.existsById(employeeId)) {
             throw new NotFoundException(ENTITY_NAME, ENTITY_FIELD, employeeId.toString());
         }
@@ -85,6 +87,7 @@ public class EmployeeController {
         return employeeMapper.toDto(employee);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable Long employeeId) {

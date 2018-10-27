@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.jondelatorre.employee.dto.EmployeeDto;
-import com.jondelatorre.employee.entity.Employee;
+import com.jondelatorre.employee.model.Employee;
 
 @Component
 public class EmployeeDtoToEmployeeMapper implements Mapper<EmployeeDto, Employee> {
@@ -17,27 +17,27 @@ public class EmployeeDtoToEmployeeMapper implements Mapper<EmployeeDto, Employee
 
     @NotNull
     @Override
-    public Employee toEntity(final EmployeeDto dto) {
-        final Employee entity = new Employee();
+    public Employee toModel(final EmployeeDto dto) {
+        final Employee model = new Employee();
         logger.debug("About to map dto: {}", dto);
-        BeanUtils.copyProperties(dto, entity);
-        entity.setMiddleNameInitial(dto.getMiddleInitial());
-        entity.setBirthdate(dto.getDateOfBirth());
-        entity.setEmploymentDate(dto.getDateOfEmployment());
+        BeanUtils.copyProperties(dto, model);
+        model.setMiddleNameInitial(dto.getMiddleInitial());
+        model.setBirthdate(dto.getDateOfBirth());
+        model.setEmploymentDate(dto.getDateOfEmployment());
 
-        logger.debug("Mapped to entity: {}", entity);
-        return entity;
+        logger.debug("Mapped to model: {}", model);
+        return model;
     }
 
     @NotNull
     @Override
-    public EmployeeDto toDto(final Employee entity) {
+    public EmployeeDto toDto(final Employee model) {
         final EmployeeDto dto = new EmployeeDto();
-        logger.debug("About to map entity: {}", entity);
-        BeanUtils.copyProperties(entity, dto);
-        dto.setMiddleInitial(entity.getMiddleNameInitial());
-        dto.setDateOfBirth(entity.getBirthdate());
-        dto.setDateOfEmployment(entity.getEmploymentDate());
+        logger.debug("About to map model: {}", model);
+        BeanUtils.copyProperties(model, dto);
+        dto.setMiddleInitial(model.getMiddleNameInitial());
+        dto.setDateOfBirth(model.getBirthdate());
+        dto.setDateOfEmployment(model.getEmploymentDate());
 
         logger.debug("Mapped to dto: {}", dto);
         return dto;

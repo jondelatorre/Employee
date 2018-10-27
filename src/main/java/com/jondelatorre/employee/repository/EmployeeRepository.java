@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.jondelatorre.employee.entity.Employee;
+import com.jondelatorre.employee.model.Employee;
 
 public interface EmployeeRepository extends MongoRepository<Employee, Long> {
 

@@ -1,4 +1,4 @@
-package com.jondelatorre.employee.entity;
+package com.jondelatorre.employee.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

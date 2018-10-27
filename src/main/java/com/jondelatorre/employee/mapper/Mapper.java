@@ -1,9 +1,9 @@
 package com.jondelatorre.employee.mapper;
 
-public interface Mapper<D, E> {
+public interface Mapper<D, M> {
 
-    public E toEntity(D dto);
+    public M toModel(D dto);
 
-    public D toDto(E entity);
+    public D toDto(M entity);
 
 }
