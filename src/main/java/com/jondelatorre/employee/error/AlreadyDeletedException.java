@@ -25,7 +25,7 @@ public class AlreadyDeletedException extends RuntimeException {
     private final String id;
 
     public AlreadyDeletedException(String entityName, String id) {
-        super(String.format("%s with ids = %s has already been deleted", entityName, id));
+        super(String.format("%s with id = %s has already been deleted", entityName, id));
         logger.info("{} with id = {} has already been deleted", entityName, id);
         this.entityName = entityName;
         this.id = id;

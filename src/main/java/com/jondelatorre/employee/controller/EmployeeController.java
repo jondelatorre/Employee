@@ -2,7 +2,6 @@ package com.jondelatorre.employee.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -10,12 +9,10 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jondelatorre.employee.dto.EmployeeDto;
 import com.jondelatorre.employee.error.AlreadyDeletedException;
-import com.jondelatorre.employee.error.ErrorDto;
 import com.jondelatorre.employee.error.NotFoundException;
 import com.jondelatorre.employee.mapper.Mapper;
 import com.jondelatorre.employee.model.Employee;
@@ -60,7 +56,7 @@ public class EmployeeController {
         employee = employeeRepository.insert(employee);
 
         logger.debug("Created employee: {}", employee);
-        return employeeDto;
+        return employeeMapper.toDto(employee);
     }
 
     @GetMapping(value = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +77,7 @@ public class EmployeeController {
             throw new NotFoundException(ENTITY_NAME, ENTITY_FIELD, employeeId.toString());
         }
         employee.setId(employeeId);
+        employee.setStatus(true);
         employee = employeeRepository.save(employee);
 
         logger.debug("Updated employee: {}", employee);
@@ -110,14 +107,5 @@ public class EmployeeController {
         return employeeRepository.findByStatusIsTrue().stream()
                 .map(entity -> employeeMapper.toDto(entity)).collect(Collectors.toList());
     }
-
-    @ResponseStatus(value = HttpStatus.CONFLICT)
-    @ExceptionHandler(DuplicateKeyException.class)
-    public ErrorDto duplicatedIdError(DuplicateKeyException ex) {
-        logger.info("Cannot create employee because id already exists");
-        return new ErrorDto(HttpStatus.BAD_REQUEST, "Id already exists", "/employee",
-                UUID.randomUUID().toString());
-    }
-
 
 }

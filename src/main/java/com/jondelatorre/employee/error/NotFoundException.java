@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * ************************************************************************ NotFoundException.java
- * employee project
+ * Employee project
  * 
  * Generic exception to be thrown whenever some entity searched by a single field is not found in
  * the database
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *************************************************************************
  */
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Entity not found") // 404
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Model not found") // 404
 public class NotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -28,16 +28,16 @@ public class NotFoundException extends RuntimeException {
 
     /**
      * 
-     * @param entityName Name of the entity not found (e.g.: Employee)
+     * @param modelName Name of the model not found (e.g.: Employee)
      * @param fieldName Name of the field used to search the entity (e.g.: id)
      * @param value Value used to identify the entity (e.g.: 5)
      */
-    public NotFoundException(final String entityName, final String fieldName,
+    public NotFoundException(final String modelName, final String fieldName,
             final String fieldValue) {
-        super(String.format("%s with %s = %s not found in the database", entityName, fieldName,
+        super(String.format("%s with %s = %s not found in the database", modelName, fieldName,
                 fieldValue));
-        logger.info("{} with {} = {} not found in the database", entityName, fieldName, fieldValue);
-        this.entityName = entityName;
+        logger.info("{} with {} = {} not found in the database", modelName, fieldName, fieldValue);
+        this.entityName = modelName;
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
     }
