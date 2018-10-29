@@ -85,7 +85,7 @@ public class EmployeeController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{employeeId}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable Long employeeId) {
         final Employee employee = employeeRepository.findById(employeeId).orElseThrow(
