@@ -48,7 +48,7 @@ This method will retrieve a single ACTIVE employee from the database.
 1. Headers
     1. `Accept:application/json`
 1. Path Parameters
-    1. {employeeId}: Replace it with the actual employee id you want to retrieve, e.g.:1
+    1. `{employeeId}`: Replace it with the actual employee id you want to retrieve, e.g.:1
 
 #### Response  
 The response body will have a single employee retrieved from the database in case it exists. If it doesn't exists it will return a 404 error.
@@ -60,7 +60,7 @@ This method will update a single ACTIVE employee in the database.
     1. `Accept:application/json`
     1. `Content-Type:application/json`
 1. Path Parameters
-    1. {employeeId}: Replace it with the actual employee id you want to update, e.g.:1
+    1. `{employeeId}`: Replace it with the actual employee id you want to update, e.g.:1
 1. Body
     1. You can see an example of the body [here](./src/test/resources/input-sample.json)
 
@@ -76,7 +76,7 @@ This method will soft delete a single ACTIVE employee in the database. It requir
     1. `Authorization: Basic {base64(user:password)}`
         1. Replace {base64(user:password)} with the actual base64 encoding for username and password.
 1. Path Parameters
-    1. {employeeId}: Replace it with the actual employee id you want to delete, e.g.:1
+    1. `{employeeId}`: Replace it with the actual employee id you want to delete, e.g.:1
 #### Response
 The response body will be empty in case the operation succeeds. If the employee does not exist or the employee has been already deleted, it will return an error message in json format.
 
@@ -92,7 +92,7 @@ By default, the program loads a internal js script using [Mongeez change managem
 3. Then add all your inserts with the next format:
 ```javascript
 db.employee.insert({
-    "_id" : "1", "firstName" : "Leonardo", "middleNameInitial":"T", "lastName": "Da Vinci", "birthdate": new Date("1984-05-01"), "employmentDate": new Date("1987-12-28"), "status": true, "created": new Date(), "lastUpdated": new Date, "_class": "com.jondelatorre.employee.model.Employee"
+    "_id" : NumberLong("1"), "firstName" : "Leonardo", "middleNameInitial":"T", "lastName": "Da Vinci", "birthdate": new Date("1984-05-01"), "employmentDate": new Date("1987-12-28"), "status": true, "created": new Date(), "lastUpdated": new Date, "_class": "com.jondelatorre.employee.model.Employee"
 });
 ```
 4. Save the file
